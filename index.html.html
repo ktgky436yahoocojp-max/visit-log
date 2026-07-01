@@ -30,127 +30,106 @@
     align-items:center;
     justify-content:space-between;
   }
-  header .title-block .eyebrow{
-    font-size:11px;
-    letter-spacing:.12em;
-    color:var(--moss);
-    font-weight:700;
-  }
-  header h1{
-    margin:4px 0 0;
-    font-size:21px;
-    font-weight:800;
-    letter-spacing:.02em;
-  }
-  .settings-icon{
-    width:38px; height:38px;
-    border:none;
-    background:transparent;
-    font-size:22px;
-    cursor:pointer;
-    display:flex; align-items:center; justify-content:center;
-  }
+  header .eyebrow{font-size:11px;letter-spacing:.12em;color:var(--moss);font-weight:700;}
+  header h1{margin:4px 0 0;font-size:21px;font-weight:800;letter-spacing:.02em;}
+  .settings-icon{width:38px;height:38px;border:none;background:transparent;font-size:22px;cursor:pointer;}
 
   /* ===== 設定画面 ===== */
   #setupScreen{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    min-height:100svh;
-    padding:32px 24px;
-    text-align:center;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:100svh;padding:32px 24px;text-align:center;
   }
-  #setupScreen .icon{font-size:48px; margin-bottom:16px;}
-  #setupScreen h2{font-size:22px; font-weight:800; margin:0 0 8px;}
-  #setupScreen p{color:var(--muted); font-size:14px; margin:0 0 24px; line-height:1.7;}
+  #setupScreen .icon{font-size:48px;margin-bottom:16px;}
+  #setupScreen h2{font-size:22px;font-weight:800;margin:0 0 8px;}
+  #setupScreen p{color:var(--muted);font-size:14px;margin:0 0 24px;line-height:1.7;}
   #setupScreen input{
-    width:100%;
-    padding:14px;
-    border:1px solid var(--line);
-    border-radius:10px;
-    font-size:14px;
-    font-family:monospace;
-    background:#fff;
-    margin-bottom:12px;
+    width:100%;padding:14px;border:1px solid var(--line);border-radius:10px;
+    font-size:14px;font-family:monospace;background:#fff;margin-bottom:12px;
   }
   #setupScreen .save-btn{
-    width:100%;
-    padding:16px;
-    border:none;
-    border-radius:12px;
-    background:var(--moss);
-    color:#fff;
-    font-size:16px;
-    font-weight:800;
+    width:100%;padding:16px;border:none;border-radius:12px;
+    background:var(--moss);color:#fff;font-size:16px;font-weight:800;
   }
   #setupScreen .hint{
-    margin-top:20px;
-    font-size:12px;
-    color:var(--muted);
-    line-height:1.8;
-    text-align:left;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:14px;
+    margin-top:20px;font-size:12px;color:var(--muted);line-height:1.8;
+    text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;
   }
 
   /* ===== メイン画面 ===== */
   #mainScreen{display:none;}
   main{padding:18px 16px 100px;}
+
+  /* GPSカード */
   .gps-card{
-    background:var(--moss-deep);
-    color:#f4f1e6;
-    border-radius:14px;
-    padding:16px;
-    margin-bottom:18px;
+    background:var(--moss-deep);color:#f4f1e6;
+    border-radius:14px;padding:16px;margin-bottom:12px;
   }
-  .gps-card .label{font-size:12px; opacity:.75; letter-spacing:.05em;}
-  .gps-card .coords{font-family:"SF Mono",Menlo,monospace; font-size:15px; margin-top:4px; min-height:20px;}
+  .gps-card .label{font-size:11px;opacity:.7;letter-spacing:.08em;font-weight:700;}
+  .gps-card .coords{font-family:"SF Mono",Menlo,monospace;font-size:13px;margin-top:3px;opacity:.8;}
+  .gps-card .address{font-size:15px;font-weight:700;margin-top:6px;min-height:20px;line-height:1.5;}
+  .gps-card .address.loading{opacity:.6;font-size:13px;}
+  .gps-row{display:flex;gap:8px;margin-top:12px;}
   .gps-btn{
-    width:100%; margin-top:12px; padding:14px;
-    border:none; border-radius:10px;
-    background:var(--gold); color:#2b2300;
-    font-size:16px; font-weight:700; letter-spacing:.02em;
+    flex:1;padding:13px 8px;border:none;border-radius:10px;
+    background:var(--gold);color:#2b2300;font-size:15px;font-weight:700;
   }
   .gps-btn:active{transform:scale(.98);}
   .gps-btn[disabled]{opacity:.6;}
+  .map-btn{
+    padding:13px 14px;border:none;border-radius:10px;
+    background:rgba(255,255,255,.15);color:#f4f1e6;font-size:15px;font-weight:700;
+    white-space:nowrap;
+  }
+  .map-btn[disabled]{opacity:.4;}
+
+  /* 前回訪問カード */
+  #historyCard{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:14px;margin-bottom:18px;display:none;
+  }
+  #historyCard .hist-head{
+    font-size:11px;font-weight:700;letter-spacing:.08em;
+    color:var(--clay);margin-bottom:8px;
+  }
+  #historyCard .hist-name{font-size:16px;font-weight:800;margin-bottom:4px;}
+  #historyCard .hist-row{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.6;}
+  #historyCard .hist-memo{
+    margin-top:8px;padding:8px 10px;background:var(--paper);
+    border-radius:8px;font-size:13px;color:var(--ink);
+  }
+
   section{margin-bottom:20px;}
   section h2{
-    font-size:13px; color:var(--muted); font-weight:700;
-    letter-spacing:.06em; margin:0 0 8px;
-    border-left:3px solid var(--clay); padding-left:8px;
+    font-size:13px;color:var(--muted);font-weight:700;letter-spacing:.06em;
+    margin:0 0 8px;border-left:3px solid var(--clay);padding-left:8px;
   }
-  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
   .chip{
-    padding:10px 14px; border:1px solid var(--line);
-    border-radius:20px; background:#fff; font-size:14px; color:var(--ink);
+    padding:10px 14px;border:1px solid var(--line);
+    border-radius:20px;background:#fff;font-size:14px;color:var(--ink);
   }
-  .chip.sel{background:var(--moss); color:#fff; border-color:var(--moss);}
-  input[type=text], textarea{
-    width:100%; padding:12px;
-    border:1px solid var(--line); border-radius:8px;
-    font-size:15px; background:#fff; font-family:inherit;
+  .chip.sel{background:var(--moss);color:#fff;border-color:var(--moss);}
+  input[type=text],textarea{
+    width:100%;padding:12px;border:1px solid var(--line);
+    border-radius:8px;font-size:15px;background:#fff;font-family:inherit;
   }
-  textarea{min-height:60px; resize:vertical;}
+  textarea{min-height:60px;resize:vertical;}
+
   .submit-bar{
-    position:fixed; bottom:0; left:0; right:0;
+    position:fixed;bottom:0;left:0;right:0;
     padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:linear-gradient(to top, var(--paper) 70%, transparent);
+    background:linear-gradient(to top,var(--paper) 70%,transparent);
   }
   .submit-btn{
-    width:100%; padding:16px; border:none; border-radius:12px;
-    background:var(--clay); color:#fff; font-size:16px; font-weight:800; letter-spacing:.03em;
+    width:100%;padding:16px;border:none;border-radius:12px;
+    background:var(--clay);color:#fff;font-size:16px;font-weight:800;letter-spacing:.03em;
   }
   .submit-btn[disabled]{opacity:.5;}
   .toast{
-    position:fixed; top:18px; left:50%;
-    transform:translateX(-50%);
-    background:var(--moss-deep); color:#fff;
-    padding:10px 18px; border-radius:8px; font-size:14px;
-    opacity:0; transition:opacity .25s; pointer-events:none; z-index:10;
-    white-space:nowrap;
+    position:fixed;top:18px;left:50%;transform:translateX(-50%);
+    background:var(--moss-deep);color:#fff;padding:10px 18px;
+    border-radius:8px;font-size:14px;opacity:0;transition:opacity .25s;
+    pointer-events:none;z-index:10;white-space:nowrap;
   }
   .toast.show{opacity:1;}
 </style>
@@ -178,18 +157,34 @@
 <!-- メイン画面 -->
 <div id="mainScreen">
   <header>
-    <div class="title-block">
+    <div>
       <div class="eyebrow">住まう力 地域訪問員</div>
       <h1>訪問記録</h1>
     </div>
-    <button class="settings-icon" onclick="openSettings()" title="設定">⚙️</button>
+    <button class="settings-icon" onclick="openSettings()">⚙️</button>
   </header>
 
   <main>
+    <!-- GPSカード -->
     <div class="gps-card">
       <div class="label">現在地</div>
-      <div class="coords" id="coords">未取得</div>
-      <button class="gps-btn" id="gpsBtn" onclick="getLocation()">📍 現在地を記録</button>
+      <div class="coords" id="coords">—</div>
+      <div class="address" id="address">住所未取得</div>
+      <div class="gps-row">
+        <button class="gps-btn" id="gpsBtn" onclick="getLocation()">📍 現在地を記録</button>
+        <button class="map-btn" id="mapBtn" onclick="openMap()" disabled>🗺 マップ</button>
+      </div>
+    </div>
+
+    <!-- 前回訪問履歴カード -->
+    <div id="historyCard">
+      <div class="hist-head">📋 前回の訪問記録</div>
+      <div class="hist-name" id="histName"></div>
+      <div class="hist-row" id="histDate"></div>
+      <div class="hist-row" id="histResult"></div>
+      <div class="hist-row" id="histLine"></div>
+      <div class="hist-row" id="histConcerns"></div>
+      <div class="hist-memo" id="histMemo" style="display:none"></div>
     </div>
 
     <section>
@@ -208,10 +203,9 @@
     <section>
       <h2>訪問結果</h2>
       <div class="chip-row" data-group="visitResult">
-        <div class="chip" data-value="訪問済">訪問済</div>
-        <div class="chip" data-value="留守">留守</div>
-        <div class="chip" data-value="要フォロー">要フォロー</div>
-        <div class="chip" data-value="拒否">拒否</div>
+        <div class="chip" data-value="対面">対面</div>
+        <div class="chip" data-value="インターフォン">インターフォン</div>
+        <div class="chip" data-value="不在">不在</div>
       </div>
     </section>
 
@@ -264,23 +258,16 @@
 const STORAGE_KEY = 'sumauchikara_gas_url';
 let lat = null, lng = null;
 
-// 起動時: URLが保存済みならメイン画面へ
 window.onload = () => {
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
-    showMain();
-  } else {
-    document.getElementById('setupScreen').style.display = 'flex';
-  }
+  if (saved) showMain(); else document.getElementById('setupScreen').style.display = 'flex';
 
-  // チップのタップ処理
   document.querySelectorAll('.chip-row').forEach(row => {
-    const multi = row.dataset.multi === "true";
+    const multi = row.dataset.multi === 'true';
     row.querySelectorAll('.chip').forEach(chip => {
       chip.onclick = () => {
-        if (multi) {
-          chip.classList.toggle('sel');
-        } else {
+        if (multi) chip.classList.toggle('sel');
+        else {
           row.querySelectorAll('.chip').forEach(c => c.classList.remove('sel'));
           chip.classList.add('sel');
         }
@@ -291,46 +278,64 @@ window.onload = () => {
 
 function saveGasUrl() {
   const url = document.getElementById('gasUrlInput').value.trim();
-  if (!url.startsWith('https://script.google.com')) {
-    showToast('URLの形式が正しくありません');
-    return;
-  }
+  if (!url.startsWith('https://script.google.com')) { showToast('URLの形式が正しくありません'); return; }
   localStorage.setItem(STORAGE_KEY, url);
   showMain();
   showToast('設定を保存しました');
 }
-
 function showMain() {
   document.getElementById('setupScreen').style.display = 'none';
   document.getElementById('mainScreen').style.display = 'block';
 }
-
 function openSettings() {
-  const current = localStorage.getItem(STORAGE_KEY) || '';
-  document.getElementById('gasUrlInput').value = current;
+  document.getElementById('gasUrlInput').value = localStorage.getItem(STORAGE_KEY) || '';
   document.getElementById('mainScreen').style.display = 'none';
   document.getElementById('setupScreen').style.display = 'flex';
 }
 
+// ==============================
+// GPS取得 → 住所表示 → 履歴取得
+// ==============================
 function getLocation() {
   const btn = document.getElementById('gpsBtn');
-  const coordsEl = document.getElementById('coords');
-  if (!navigator.geolocation) {
-    coordsEl.textContent = 'この端末では位置情報が使えません';
-    return;
-  }
+  if (!navigator.geolocation) { showToast('位置情報が使えません'); return; }
   btn.disabled = true;
   btn.textContent = '取得中...';
+  document.getElementById('address').textContent = '住所を取得中...';
+  document.getElementById('address').className = 'address loading';
+
   navigator.geolocation.getCurrentPosition(
-    pos => {
+    async pos => {
       lat = pos.coords.latitude;
       lng = pos.coords.longitude;
-      coordsEl.textContent = `緯度 ${lat.toFixed(6)} / 経度 ${lng.toFixed(6)}`;
+      document.getElementById('coords').textContent =
+        `緯度 ${lat.toFixed(6)} / 経度 ${lng.toFixed(6)}`;
       btn.disabled = false;
-      btn.textContent = '📍 現在地を再取得';
+      btn.textContent = '📍 再取得';
+      document.getElementById('mapBtn').disabled = false;
+
+      // Nominatim(OpenStreetMap)で住所取得 — APIキー不要
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=ja`,
+          { headers: { 'Accept-Language': 'ja' } }
+        );
+        const json = await res.json();
+        const addr = json.display_name || '住所取得失敗';
+        document.getElementById('address').textContent = addr;
+        document.getElementById('address').className = 'address';
+      } catch {
+        document.getElementById('address').textContent = '住所取得失敗';
+        document.getElementById('address').className = 'address';
+      }
+
+      // 前回訪問履歴を取得
+      fetchHistory(lat, lng);
     },
     err => {
-      coordsEl.textContent = '取得失敗: ' + err.message;
+      document.getElementById('coords').textContent = '取得失敗';
+      document.getElementById('address').textContent = err.message;
+      document.getElementById('address').className = 'address';
       btn.disabled = false;
       btn.textContent = '📍 現在地を記録';
     },
@@ -338,6 +343,42 @@ function getLocation() {
   );
 }
 
+function openMap() {
+  if (lat && lng) window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
+}
+
+// ==============================
+// 前回訪問履歴
+// ==============================
+async function fetchHistory(lat, lng) {
+  const gasUrl = localStorage.getItem(STORAGE_KEY);
+  if (!gasUrl) return;
+  try {
+    const res = await fetch(`${gasUrl}?lat=${lat}&lng=${lng}`);
+    const data = await res.json();
+    if (data.found) showHistory(data);
+    else document.getElementById('historyCard').style.display = 'none';
+  } catch { /* 履歴取得失敗は無視 */ }
+}
+
+function showHistory(d) {
+  const card = document.getElementById('historyCard');
+  document.getElementById('histName').textContent =
+    (d.buildingName || d.address || '(建物名なし)') + (d.buildingType ? ` ／ ${d.buildingType}` : '');
+  document.getElementById('histDate').textContent = `📅 前回: ${d.date}`;
+  document.getElementById('histResult').textContent = `結果: ${d.visitResult || '—'}`;
+  document.getElementById('histLine').textContent = `LINE: ${d.lineRegistered || '—'}`;
+  document.getElementById('histConcerns').textContent =
+    d.concerns ? `お困りごと: ${d.concerns}` : '';
+  const memoEl = document.getElementById('histMemo');
+  if (d.memo) { memoEl.textContent = `💬 ${d.memo}`; memoEl.style.display = 'block'; }
+  else memoEl.style.display = 'none';
+  card.style.display = 'block';
+}
+
+// ==============================
+// 送信
+// ==============================
 function getSelected(groupName) {
   const row = document.querySelector(`.chip-row[data-group="${groupName}"]`);
   return Array.from(row.querySelectorAll('.chip.sel')).map(c => c.dataset.value);
@@ -353,7 +394,6 @@ function showToast(msg) {
 async function submitVisit() {
   const gasUrl = localStorage.getItem(STORAGE_KEY);
   if (!gasUrl) { showToast('設定が必要です'); return; }
-
   const data = {
     lat, lng,
     buildingType: getSelected('buildingType')[0] || '',
@@ -364,13 +404,10 @@ async function submitVisit() {
     memo: document.getElementById('memo').value,
     followUp: getSelected('followUp')[0] || ''
   };
-
   if (!data.visitResult) { showToast('訪問結果を選択してください'); return; }
 
   const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  btn.textContent = '送信中...';
-
+  btn.disabled = true; btn.textContent = '送信中...';
   try {
     await fetch(gasUrl, {
       method: 'POST',
@@ -379,11 +416,10 @@ async function submitVisit() {
     });
     showToast('✅ 記録しました');
     resetForm();
-  } catch (e) {
-    showToast('送信エラー: ' + e.message);
+  } catch (err) {
+    showToast('送信エラー: ' + err.message);
   } finally {
-    btn.disabled = false;
-    btn.textContent = '記録する';
+    btn.disabled = false; btn.textContent = '記録する';
   }
 }
 
@@ -391,10 +427,13 @@ function resetForm() {
   document.querySelectorAll('.chip.sel').forEach(c => c.classList.remove('sel'));
   document.getElementById('buildingName').value = '';
   document.getElementById('memo').value = '';
-  document.getElementById('coords').textContent = '未取得';
+  document.getElementById('coords').textContent = '—';
+  document.getElementById('address').textContent = '住所未取得';
+  document.getElementById('address').className = 'address';
+  document.getElementById('historyCard').style.display = 'none';
+  document.getElementById('mapBtn').disabled = true;
   lat = null; lng = null;
 }
 </script>
-
 </body>
 </html>
