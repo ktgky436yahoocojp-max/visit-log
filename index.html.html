@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>住まう力 訪問記録</title>
+<style>
+  :root{
+    --ink:#2b2b28;
+    --paper:#faf7f0;
+    --line:#dcd5c4;
+    --moss:#3f6b52;
+    --moss-deep:#2c4d3a;
+    --clay:#c1623f;
+    --gold:#b8923f;
+    --muted:#8c8576;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Hiragino Sans","Yu Gothic UI",sans-serif;
+    -webkit-tap-highlight-color:transparent;
+  }
+  header{
+    padding:22px 20px 16px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  header .title-block .eyebrow{
+    font-size:11px;
+    letter-spacing:.12em;
+    color:var(--moss);
+    font-weight:700;
+  }
+  header h1{
+    margin:4px 0 0;
+    font-size:21px;
+    font-weight:800;
+    letter-spacing:.02em;
+  }
+  .settings-icon{
+    width:38px; height:38px;
+    border:none;
+    background:transparent;
+    font-size:22px;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ===== 設定画面 ===== */
+  #setupScreen{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    min-height:100svh;
+    padding:32px 24px;
+    text-align:center;
+  }
+  #setupScreen .icon{font-size:48px; margin-bottom:16px;}
+  #setupScreen h2{font-size:22px; font-weight:800; margin:0 0 8px;}
+  #setupScreen p{color:var(--muted); font-size:14px; margin:0 0 24px; line-height:1.7;}
+  #setupScreen input{
+    width:100%;
+    padding:14px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-size:14px;
+    font-family:monospace;
+    background:#fff;
+    margin-bottom:12px;
+  }
+  #setupScreen .save-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:12px;
+    background:var(--moss);
+    color:#fff;
+    font-size:16px;
+    font-weight:800;
+  }
+  #setupScreen .hint{
+    margin-top:20px;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.8;
+    text-align:left;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:14px;
+  }
+
+  /* ===== メイン画面 ===== */
+  #mainScreen{display:none;}
+  main{padding:18px 16px 100px;}
+  .gps-card{
+    background:var(--moss-deep);
+    color:#f4f1e6;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:18px;
+  }
+  .gps-card .label{font-size:12px; opacity:.75; letter-spacing:.05em;}
+  .gps-card .coords{font-family:"SF Mono",Menlo,monospace; font-size:15px; margin-top:4px; min-height:20px;}
+  .gps-btn{
+    width:100%; margin-top:12px; padding:14px;
+    border:none; border-radius:10px;
+    background:var(--gold); color:#2b2300;
+    font-size:16px; font-weight:700; letter-spacing:.02em;
+  }
+  .gps-btn:active{transform:scale(.98);}
+  .gps-btn[disabled]{opacity:.6;}
+  section{margin-bottom:20px;}
+  section h2{
+    font-size:13px; color:var(--muted); font-weight:700;
+    letter-spacing:.06em; margin:0 0 8px;
+    border-left:3px solid var(--clay); padding-left:8px;
+  }
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    padding:10px 14px; border:1px solid var(--line);
+    border-radius:20px; background:#fff; font-size:14px; color:var(--ink);
+  }
+  .chip.sel{background:var(--moss); color:#fff; border-color:var(--moss);}
+  input[type=text], textarea{
+    width:100%; padding:12px;
+    border:1px solid var(--line); border-radius:8px;
+    font-size:15px; background:#fff; font-family:inherit;
+  }
+  textarea{min-height:60px; resize:vertical;}
+  .submit-bar{
+    position:fixed; bottom:0; left:0; right:0;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:linear-gradient(to top, var(--paper) 70%, transparent);
+  }
+  .submit-btn{
+    width:100%; padding:16px; border:none; border-radius:12px;
+    background:var(--clay); color:#fff; font-size:16px; font-weight:800; letter-spacing:.03em;
+  }
+  .submit-btn[disabled]{opacity:.5;}
+  .toast{
+    position:fixed; top:18px; left:50%;
+    transform:translateX(-50%);
+    background:var(--moss-deep); color:#fff;
+    padding:10px 18px; border-radius:8px; font-size:14px;
+    opacity:0; transition:opacity .25s; pointer-events:none; z-index:10;
+    white-space:nowrap;
+  }
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- 設定画面 -->
+<div id="setupScreen">
+  <div class="icon">⚙️</div>
+  <h2>初回設定</h2>
+  <p>GASのWebApp URLを貼り付けてください。<br>次回からは自動で使えます。</p>
+  <input type="text" id="gasUrlInput" placeholder="https://script.google.com/macros/s/...">
+  <button class="save-btn" onclick="saveGasUrl()">保存して開始</button>
+  <div class="hint">
+    <strong>GAS URLの取得手順</strong><br>
+    ① Googleスプレッドシートを開く<br>
+    ② 拡張機能 → Apps Script<br>
+    ③ コードを貼り付けて保存<br>
+    ④ デプロイ → 新しいデプロイ<br>
+    ⑤ 種類:ウェブアプリ / アクセス:全員<br>
+    ⑥ 発行されたURLをここに貼る
+  </div>
+</div>
+
+<!-- メイン画面 -->
+<div id="mainScreen">
+  <header>
+    <div class="title-block">
+      <div class="eyebrow">住まう力 地域訪問員</div>
+      <h1>訪問記録</h1>
+    </div>
+    <button class="settings-icon" onclick="openSettings()" title="設定">⚙️</button>
+  </header>
+
+  <main>
+    <div class="gps-card">
+      <div class="label">現在地</div>
+      <div class="coords" id="coords">未取得</div>
+      <button class="gps-btn" id="gpsBtn" onclick="getLocation()">📍 現在地を記録</button>
+    </div>
+
+    <section>
+      <h2>建物種別</h2>
+      <div class="chip-row" data-group="buildingType">
+        <div class="chip" data-value="マンション">マンション</div>
+        <div class="chip" data-value="戸建">戸建</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>建物名(任意)</h2>
+      <input type="text" id="buildingName" placeholder="例: ○○マンション">
+    </section>
+
+    <section>
+      <h2>訪問結果</h2>
+      <div class="chip-row" data-group="visitResult">
+        <div class="chip" data-value="訪問済">訪問済</div>
+        <div class="chip" data-value="留守">留守</div>
+        <div class="chip" data-value="要フォロー">要フォロー</div>
+        <div class="chip" data-value="拒否">拒否</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>LINE登録</h2>
+      <div class="chip-row" data-group="lineRegistered">
+        <div class="chip" data-value="登録済">登録済</div>
+        <div class="chip" data-value="未登録">未登録</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>お困りごと(複数選択可)</h2>
+      <div class="chip-row" data-group="concerns" data-multi="true">
+        <div class="chip" data-value="相続">相続</div>
+        <div class="chip" data-value="売却">売却</div>
+        <div class="chip" data-value="住み替え">住み替え</div>
+        <div class="chip" data-value="管理組合">管理組合</div>
+        <div class="chip" data-value="修繕">修繕</div>
+        <div class="chip" data-value="介護">介護</div>
+        <div class="chip" data-value="空き家">空き家</div>
+        <div class="chip" data-value="その他">その他</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>メモ</h2>
+      <textarea id="memo" placeholder="気になった点を一言"></textarea>
+    </section>
+
+    <section>
+      <h2>次回フォロー</h2>
+      <div class="chip-row" data-group="followUp">
+        <div class="chip" data-value="来月">来月</div>
+        <div class="chip" data-value="半年後">半年後</div>
+        <div class="chip" data-value="1年後">1年後</div>
+        <div class="chip" data-value="不要">不要</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="submit-bar">
+    <button class="submit-btn" id="submitBtn" onclick="submitVisit()">記録する</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'sumauchikara_gas_url';
+let lat = null, lng = null;
+
+// 起動時: URLが保存済みならメイン画面へ
+window.onload = () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    showMain();
+  } else {
+    document.getElementById('setupScreen').style.display = 'flex';
+  }
+
+  // チップのタップ処理
+  document.querySelectorAll('.chip-row').forEach(row => {
+    const multi = row.dataset.multi === "true";
+    row.querySelectorAll('.chip').forEach(chip => {
+      chip.onclick = () => {
+        if (multi) {
+          chip.classList.toggle('sel');
+        } else {
+          row.querySelectorAll('.chip').forEach(c => c.classList.remove('sel'));
+          chip.classList.add('sel');
+        }
+      };
+    });
+  });
+};
+
+function saveGasUrl() {
+  const url = document.getElementById('gasUrlInput').value.trim();
+  if (!url.startsWith('https://script.google.com')) {
+    showToast('URLの形式が正しくありません');
+    return;
+  }
+  localStorage.setItem(STORAGE_KEY, url);
+  showMain();
+  showToast('設定を保存しました');
+}
+
+function showMain() {
+  document.getElementById('setupScreen').style.display = 'none';
+  document.getElementById('mainScreen').style.display = 'block';
+}
+
+function openSettings() {
+  const current = localStorage.getItem(STORAGE_KEY) || '';
+  document.getElementById('gasUrlInput').value = current;
+  document.getElementById('mainScreen').style.display = 'none';
+  document.getElementById('setupScreen').style.display = 'flex';
+}
+
+function getLocation() {
+  const btn = document.getElementById('gpsBtn');
+  const coordsEl = document.getElementById('coords');
+  if (!navigator.geolocation) {
+    coordsEl.textContent = 'この端末では位置情報が使えません';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = '取得中...';
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      lat = pos.coords.latitude;
+      lng = pos.coords.longitude;
+      coordsEl.textContent = `緯度 ${lat.toFixed(6)} / 経度 ${lng.toFixed(6)}`;
+      btn.disabled = false;
+      btn.textContent = '📍 現在地を再取得';
+    },
+    err => {
+      coordsEl.textContent = '取得失敗: ' + err.message;
+      btn.disabled = false;
+      btn.textContent = '📍 現在地を記録';
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+function getSelected(groupName) {
+  const row = document.querySelector(`.chip-row[data-group="${groupName}"]`);
+  return Array.from(row.querySelectorAll('.chip.sel')).map(c => c.dataset.value);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+async function submitVisit() {
+  const gasUrl = localStorage.getItem(STORAGE_KEY);
+  if (!gasUrl) { showToast('設定が必要です'); return; }
+
+  const data = {
+    lat, lng,
+    buildingType: getSelected('buildingType')[0] || '',
+    buildingName: document.getElementById('buildingName').value,
+    visitResult: getSelected('visitResult')[0] || '',
+    lineRegistered: getSelected('lineRegistered')[0] || '',
+    concerns: getSelected('concerns'),
+    memo: document.getElementById('memo').value,
+    followUp: getSelected('followUp')[0] || ''
+  };
+
+  if (!data.visitResult) { showToast('訪問結果を選択してください'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+
+  try {
+    await fetch(gasUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(data)
+    });
+    showToast('✅ 記録しました');
+    resetForm();
+  } catch (e) {
+    showToast('送信エラー: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '記録する';
+  }
+}
+
+function resetForm() {
+  document.querySelectorAll('.chip.sel').forEach(c => c.classList.remove('sel'));
+  document.getElementById('buildingName').value = '';
+  document.getElementById('memo').value = '';
+  document.getElementById('coords').textContent = '未取得';
+  lat = null; lng = null;
+}
+</script>
+
+</body>
+</html>
